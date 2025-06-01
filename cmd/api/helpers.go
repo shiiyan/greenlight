@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"maps"
 	"net/http"
 )
 
@@ -14,9 +15,7 @@ func (app *application) writeJson(w http.ResponseWriter, status int, data any, h
 
 	js = append(js, '\n')
 
-	for key, value := range headers {
-		w.Header()[key] = value
-	}
+	maps.Insert(w.Header(), maps.All(headers))
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
