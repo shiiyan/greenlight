@@ -8,7 +8,16 @@ import (
 
 type envelope map[string]any
 
-func (app *application) writeJson(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
+func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst any) error {
+	err := json.NewDecoder(r.Body).Decode(dst)
+	if err != nil {
+		return err // todo: add error patterns
+	}
+
+	return nil
+}
+
+func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
 	js, err := json.Marshal(data)
 
 	if err != nil {
